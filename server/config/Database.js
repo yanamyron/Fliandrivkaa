@@ -6,7 +6,8 @@ const db = new Sequelize(
   process.env.RDS_USERNAME,    // Ім'я користувача
   process.env.RDS_PASSWORD,    // Пароль користувача
   {
-    host: process.env.RDS_HOSTNAME,  // Хост бази даних
+    host: process.env.RDS_HOSTNAME,
+     port: 3306,    
     dialect: "mysql"
   }
 );
