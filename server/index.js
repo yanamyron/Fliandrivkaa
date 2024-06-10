@@ -11,7 +11,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(router);
 
-// Перевірка підключення до бази даних
 db.authenticate()
   .then(() => {
     console.log('Database connection has been established successfully.');
