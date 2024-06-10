@@ -52,8 +52,8 @@ const objectMasterClasses = {
 export const MainEnrole = db.define("mainenroles", objectDb);
 export const Goncharstvo = db.define("goncharstvo", objectDb);
 export const Lipka = db.define("lipka", objectDb);
-export const masterclasses = db.define("masterclasses", objectMasterClasses);
-export const Sertificates = db.define("sertificates", objectDb);
+export const masterclasses = db.define("masterclasse", objectMasterClasses);
+export const Sertificates = db.define("sertificate", objectDb);
 
 (async () => {
   await db.sync();
