@@ -11,12 +11,20 @@ import {
 } from "../models/MainEnrole.js";
 
 const router = express.Router();
-router.get("/users", verifyToken, getUsers);
-router.post("/users", Register);
-router.post("/login", Login);
-router.get("/token", refreshToken);
-router.delete("/logout", Logout);
-router.post("/mainenrole", async (req, res) => {
+
+// Можна додати CORS middleware на рівні окремого маршруту
+const corsOptions = {
+  origin: 'https://fliandrivka.netlify.app',
+  credentials: true,
+};
+
+router.get("/users", cors(corsOptions), verifyToken, getUsers);
+router.post("/users", cors(corsOptions), Register);
+router.post("/login", cors(corsOptions), Login);
+router.get("/token", cors(corsOptions), refreshToken);
+router.delete("/logout", cors(corsOptions), Logout);
+
+router.post("/mainenrole", cors(corsOptions), async (req, res) => {
   try {
     const newTodo = await MainEnrole.create(req.body);
     res.status(201).json(newTodo);
@@ -24,7 +32,8 @@ router.post("/mainenrole", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-router.post("/goncharstvo", async (req, res) => {
+
+router.post("/goncharstvo", cors(corsOptions), async (req, res) => {
   try {
     const newTodo = await Goncharstvo.create(req.body);
     res.status(201).json(newTodo);
@@ -32,7 +41,8 @@ router.post("/goncharstvo", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-router.post("/lipka", async (req, res) => {
+
+router.post("/lipka", cors(corsOptions), async (req, res) => {
   try {
     const newTodo = await Lipka.create(req.body);
     res.status(201).json(newTodo);
@@ -40,7 +50,8 @@ router.post("/lipka", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-router.post("/masterclasses", async (req, res) => {
+
+router.post("/masterclasses", cors(corsOptions), async (req, res) => {
   try {
     const newTodo = await masterclasses.create(req.body);
     res.status(201).json(newTodo);
@@ -48,7 +59,8 @@ router.post("/masterclasses", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-router.post("/sertificates", async (req, res) => {
+
+router.post("/sertificates", cors(corsOptions), async (req, res) => {
   try {
     const newTodo = await Sertificates.create(req.body);
     res.status(201).json(newTodo);
@@ -56,7 +68,8 @@ router.post("/sertificates", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-router.get("/dashboard", async (req, res) => {
+
+router.get("/dashboard", cors(corsOptions), async (req, res) => {
   try {
     const mainRole = await MainEnrole.findAll();
     const goncharstvo = await Goncharstvo.findAll();
@@ -64,9 +77,7 @@ router.get("/dashboard", async (req, res) => {
     const masterclassestable = await masterclasses.findAll();
     const sertificates = await Sertificates.findAll();
 
-    res
-      .status(201)
-      .json({ mainRole, goncharstvo, lipka, masterclassestable, sertificates });
+    res.status(201).json({ mainRole, goncharstvo, lipka, masterclassestable, sertificates });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
