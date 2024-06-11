@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers, Register, Login/*, Logout*/ } from "../controllers/User.js";
+import { getUsers, Register, Login, Logout } from "../controllers/User.js";
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 import {
@@ -14,8 +14,8 @@ const router = express.Router();
 router.get("/users", verifyToken, getUsers);
 router.post("/users", Register);
 router.post("/login", Login);
-//router.get("/token", refreshToken);//
-//router.delete("/logout", Logout);//
+router.get("/token", refreshToken);
+router.delete("/logout", Logout);
 router.post("/mainenrole", async (req, res) => {
   try {
     const newTodo = await MainEnrole.create(req.body);
