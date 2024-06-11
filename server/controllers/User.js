@@ -1,6 +1,6 @@
 import Users from "../models/UserModel.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+//import jwt from "jsonwebtoken";//
 export const getUsers = async(req, res) => {
  try {
  const users = await Users.findAll({
@@ -27,6 +27,7 @@ export const Register = async(req, res) => {
  console.log(error);
  }
 }
+/*
 export const Login = async(req, res) => {
  try {
  const user = await Users.findAll({
@@ -76,4 +77,18 @@ export const Logout = async(req, res) => {
  });
  res.clearCookie('refreshToken');
  return res.sendStatus(200);
+}*/
+export const Login = async(req, res) => {
+  try {
+    const user = await Users.findAll({
+      where: {
+        email: req.body.email
+      }
+    });
+    const match = await bcrypt.compare(req.body.password, user[0].password);
+    if(!match) return res.status(400).json({msg: "Wrong Password"});
+    res.json({msg: "Login Successful", userId: user[0].id, name: user[0].name, email: user[0].email});
+  } catch (error) {
+    res.status(404).json({msg: "Email not found"});
+  }
 }
